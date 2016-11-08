@@ -26,7 +26,8 @@ function preload() {
 
 var platforms,
 	player,
-	cursors;
+	cursors,
+	stars;
 
 function create() {
 
@@ -75,6 +76,25 @@ function create() {
 
 	// Create cursors object with four properties: up, down, left, right
 	cursors = game.input.keyboard.createCursorKeys();
+
+	// Create stars
+	stars = game.add.group();
+
+	// Enable physics for stars
+	stars.enableBody = true;
+
+	// Create 12 stars evenly spaced apart
+	for (var i = 0; i < 12; i++) {
+
+		// Create a star inside 'stars' group
+		var star = stars.create(i * 70, 0, 'star');
+
+		// Add gravity
+		star.body.gravity.y = 300;
+
+		// Give each star a slightly random bounce value
+		star.body.bounce.y = 0.7 + Math.random() * 0.2;
+	}
 }
 
 function update() {
@@ -104,6 +124,15 @@ function update() {
 	// Allow players to jump if they are touching ground.
 	if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
 		player.body.velocity.y = -350;
+	}
+
+	game.physics.arcade.collide(stars, platforms);
+	game.physics.arcade.overlap(player, stars, collectStar, null, this);
+
+	function collectStar(player, star) {
+		
+		// Removes star from screen
+		star.kill();
 	}
 }
 

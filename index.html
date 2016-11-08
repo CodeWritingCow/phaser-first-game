@@ -27,7 +27,9 @@ function preload() {
 var platforms,
 	player,
 	cursors,
-	stars;
+	stars,
+	score = 0,
+	scoreText;
 
 function create() {
 
@@ -95,6 +97,9 @@ function create() {
 		// Give each star a slightly random bounce value
 		star.body.bounce.y = 0.7 + Math.random() * 0.2;
 	}
+
+	// Set up scoreText
+	scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 }
 
 function update() {
@@ -133,6 +138,10 @@ function update() {
 		
 		// Removes star from screen
 		star.kill();
+
+		// Add and update score
+		score += 10;
+		scoreText.text = 'Score: ' + score;
 	}
 }
 
